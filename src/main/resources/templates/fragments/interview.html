@@ -1,318 +1,757 @@
 <!doctype html>
+
 <html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="interview-section">
-    <section class="section achievements" id="achievements">
-      <div class="container">
-        <div class="section-title-container">
-          <h2 class="section-title">Interview Experience</h2>
-          <p class="section-subtitle">
-            Sharing my interview experience and outcome.
-          </p>
-        </div>
-        <div class="achievements-container">
-          <!-- Achievement 1 -->
-          <div class="achievement-card">
-            <div class="achievement-icon">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
+  <head>
+    <style>
+      /* =========================================================
+       INTERVIEW EXPERIENCE SECTION
+       All classes use "ivx-" to avoid conflicts with other CSS
+       ========================================================= */
 
-            <div class="achievement-content">
-              <div class="achievement-header">
-                <h3 class="achievement-title">InsightsKV</h3>
-                <span class="outcome-badge">
-                  <i class="fa-solid fa-check"></i> Selected
-                </span>
+      .ivx-section {
+        width: 100%;
+        padding: 80px 0;
+        background: transparent;
+      }
+
+      .ivx-wrapper {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* =========================
+       SECTION HEADER
+       ========================= */
+
+      .ivx-heading-area {
+        text-align: center;
+        margin-bottom: 45px;
+      }
+
+      .ivx-main-heading {
+        margin: 0 0 10px;
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: #111827;
+      }
+
+      .ivx-sub-heading {
+        margin: 0;
+        color: #64748b;
+        font-size: 16px;
+      }
+
+      /* =========================
+       CARDS CONTAINER
+       ========================= */
+
+      .ivx-card-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 25px;
+        align-items: stretch;
+      }
+
+      /* =========================
+       MAIN CARD
+       ========================= */
+
+      .ivx-experience-card {
+        position: relative;
+
+        height: 540px;
+        min-height: 540px;
+
+        display: flex;
+        gap: 18px;
+
+        padding: 24px;
+
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+
+        overflow: hidden;
+
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+      }
+
+      .ivx-experience-card::before {
+        content: "";
+
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        width: 4px;
+        height: 100%;
+
+        background: linear-gradient(180deg, #6366f1, #8b5cf6);
+      }
+
+      .ivx-experience-card:hover {
+        transform: translateY(-6px);
+
+        border-color: #c7d2fe;
+
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+      }
+
+      /* =========================
+       COMPANY ICON
+       ========================= */
+
+      .ivx-company-icon {
+        flex-shrink: 0;
+
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+
+        color: #ffffff;
+
+        font-size: 21px;
+
+        box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+      }
+
+      /* =========================
+       CARD CONTENT
+       ========================= */
+
+      .ivx-card-body {
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* =========================
+       COMPANY HEADER
+       ========================= */
+
+      .ivx-company-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 12px;
+
+        margin-bottom: 7px;
+
+        flex-shrink: 0;
+      }
+
+      .ivx-company-name {
+        margin: 0;
+
+        color: #111827;
+
+        font-size: 21px;
+        font-weight: 750;
+
+        line-height: 1.25;
+      }
+
+      /* =========================
+       RESULT BADGE
+       ========================= */
+
+      .ivx-result-badge {
+        flex-shrink: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+
+        padding: 6px 10px;
+
+        border-radius: 999px;
+
+        background: #dcfce7;
+        color: #15803d;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        line-height: 1.3;
+
+        text-align: center;
+
+        max-width: 150px;
+      }
+
+      .ivx-result-badge.ivx-rejected {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .ivx-result-badge.ivx-selected {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      /* =========================
+       ROLE
+       ========================= */
+
+      .ivx-role-text {
+        margin: 3px 0;
+
+        color: #6366f1;
+
+        font-size: 14px;
+        font-weight: 650;
+
+        line-height: 1.5;
+
+        flex-shrink: 0;
+      }
+
+      .ivx-role-text i {
+        margin-right: 5px;
+      }
+
+      /* =========================
+       META INFORMATION
+       ========================= */
+
+      .ivx-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+
+        margin: 13px 0 17px;
+
+        flex-shrink: 0;
+      }
+
+      .ivx-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 6px 9px;
+
+        background: #f1f5f9;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 8px;
+
+        color: #475569;
+
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .ivx-meta-item i {
+        color: #6366f1;
+      }
+
+      /* =========================
+       QUESTIONS AREA
+       ========================= */
+
+      .ivx-question-area {
+        flex: 1;
+
+        min-height: 0;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        padding-right: 7px;
+
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+      }
+
+      /* Chrome / Edge / Safari */
+
+      .ivx-question-area::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .ivx-question-area::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .ivx-question-area::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 20px;
+      }
+
+      .ivx-question-area::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      /* =========================
+       QUESTION HEADING
+       ========================= */
+
+      .ivx-question-heading {
+        position: sticky;
+
+        top: 0;
+
+        z-index: 5;
+
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+        margin: 0 0 10px;
+
+        padding: 7px 0;
+
+        background: #ffffff;
+
+        color: #334155;
+
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .ivx-question-heading i {
+        color: #6366f1;
+      }
+
+      /* =========================
+       QUESTIONS LIST
+       ========================= */
+
+      .ivx-question-list {
+        list-style: none;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 8px;
+      }
+
+      .ivx-question-item {
+        position: relative;
+
+        padding: 11px 12px 11px 15px;
+
+        background: #f8fafc;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 9px;
+
+        color: #475569;
+
+        font-size: 12.5px;
+
+        line-height: 1.55;
+
+        transition:
+          background 0.2s ease,
+          border-color 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .ivx-question-item::before {
+        content: "";
+
+        position: absolute;
+
+        left: 0;
+        top: 9px;
+
+        width: 3px;
+        height: calc(100% - 18px);
+
+        border-radius: 10px;
+
+        background: #6366f1;
+
+        opacity: 0.6;
+      }
+
+      .ivx-question-item:hover {
+        background: #eef2ff;
+
+        border-color: #c7d2fe;
+
+        transform: translateX(2px);
+      }
+
+      /* =========================
+       CODE ELEMENT
+       ========================= */
+
+      .ivx-code {
+        padding: 2px 5px;
+
+        background: #ede9fe;
+
+        border-radius: 4px;
+
+        color: #7c3aed;
+
+        font-family: monospace;
+
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      /* =========================
+       RESPONSIVE - TABLET
+       ========================= */
+
+      @media (max-width: 1050px) {
+        .ivx-card-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .ivx-experience-card {
+          height: 520px;
+          min-height: 520px;
+        }
+      }
+
+      /* =========================
+       RESPONSIVE - MOBILE
+       ========================= */
+
+      @media (max-width: 700px) {
+        .ivx-section {
+          padding: 60px 0;
+        }
+
+        .ivx-wrapper {
+          width: 92%;
+        }
+
+        .ivx-main-heading {
+          font-size: 30px;
+        }
+
+        .ivx-card-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .ivx-experience-card {
+          height: 500px;
+          min-height: 500px;
+
+          padding: 20px;
+        }
+      }
+
+      /* =========================
+       SMALL MOBILE
+       ========================= */
+
+      @media (max-width: 450px) {
+        .ivx-experience-card {
+          flex-direction: column;
+
+          height: 510px;
+          min-height: 510px;
+
+          padding: 18px;
+        }
+
+        .ivx-company-icon {
+          width: 46px;
+          height: 46px;
+
+          font-size: 19px;
+        }
+
+        .ivx-company-header {
+          flex-direction: column;
+        }
+
+        .ivx-result-badge {
+          max-width: 100%;
+        }
+
+        .ivx-company-name {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <th:block th:fragment="interview-section">
+      <section class="ivx-section" id="interview-experience">
+        <div class="ivx-wrapper">
+          <!-- SECTION HEADER -->
+
+          <div class="ivx-heading-area">
+            <h2 class="ivx-main-heading">Interview Experience</h2>
+
+            <p class="ivx-sub-heading">
+              Sharing my interview experience and outcome.
+            </p>
+          </div>
+
+          <!-- CARDS -->
+
+          <div class="ivx-card-grid">
+            <!-- =====================================================
+             INSIGHTSKV
+             ===================================================== -->
+
+            <div class="ivx-experience-card">
+              <div class="ivx-company-icon">
+                <i class="fa-solid fa-graduation-cap"></i>
               </div>
 
-              <p class="achievement-role">
-                <i class="fa-solid fa-code"></i>
-                Web Developer Intern
-              </p>
+              <div class="ivx-card-body">
+                <div class="ivx-company-header">
+                  <h3 class="ivx-company-name">InsightsKV</h3>
 
-              <div class="achievement-meta">
-                <span>
-                  <i class="fa-regular fa-clock"></i>
-                  3 Months
-                </span>
+                  <span class="ivx-result-badge ivx-selected">
+                    <i class="fa-solid fa-check"></i>
+                    Selected
+                  </span>
+                </div>
 
-                <span>
-                  <i class="fa-solid fa-video"></i>
-                  Online Interview
-                </span>
-              </div>
+                <p class="ivx-role-text">
+                  <i class="fa-solid fa-code"></i>
 
-              <div class="questions-section">
-                <h4>
-                  <i class="fa-solid fa-circle-question"></i>
-                  Questions Asked
-                </h4>
+                  Web Developer Intern
+                </p>
 
-                <ul class="questions-list">
-                  <li>
-                    <span>Introduce yourself</span>
-                  </li>
+                <div class="ivx-meta-row">
+                  <span class="ivx-meta-item">
+                    <i class="fa-regular fa-clock"></i>
 
-                  <li>
-                    <span>
+                    3 Months
+                  </span>
+
+                  <span class="ivx-meta-item">
+                    <i class="fa-solid fa-video"></i>
+
+                    Online Interview
+                  </span>
+                </div>
+
+                <div class="ivx-question-area">
+                  <h4 class="ivx-question-heading">
+                    <i class="fa-solid fa-circle-question"></i>
+
+                    Questions Asked
+                  </h4>
+
+                  <ul class="ivx-question-list">
+                    <li class="ivx-question-item">Introduce yourself.</li>
+
+                    <li class="ivx-question-item">
                       Write code to remove even numbers from an array with
-                      <code>O(1)</code> space complexity
-                    </span>
-                  </li>
+                      <code class="ivx-code">O(1)</code>
+                      space complexity.
+                    </li>
 
-                  <li>
-                    <span>What is Spring Boot?</span>
-                  </li>
+                    <li class="ivx-question-item">What is Spring Boot?</li>
 
-                  <li>
-                    <span>Tell me what you know about APIs</span>
-                  </li>
+                    <li class="ivx-question-item">
+                      Tell me what you know about APIs.
+                    </li>
 
-                  <li>
-                    <span
-                      >How would you connect the backend with the
-                      frontend?</span
-                    >
-                  </li>
-                </ul>
+                    <li class="ivx-question-item">
+                      How would you connect the backend with the frontend?
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- =====================================================
+             HEXAWARE
+             ===================================================== -->
+
+            <div class="ivx-experience-card">
+              <div class="ivx-company-icon">
+                <i class="fa-solid fa-building"></i>
+              </div>
+
+              <div class="ivx-card-body">
+                <div class="ivx-company-header">
+                  <h3 class="ivx-company-name">Hexaware</h3>
+
+                  <span class="ivx-result-badge ivx-rejected">
+                    Rejected in HR Interview
+                  </span>
+                </div>
+
+                <p class="ivx-role-text">Status: Not Selected</p>
+
+                <p class="ivx-role-text">Role: Not Specified</p>
+
+                <div class="ivx-meta-row">
+                  <span class="ivx-meta-item">
+                    <i class="fa-regular fa-clock"></i>
+
+                    Full-Time
+                  </span>
+
+                  <span class="ivx-meta-item">
+                    <i class="fa-solid fa-building"></i>
+
+                    Offline Interview
+                  </span>
+                </div>
+
+                <div class="ivx-question-area">
+                  <h4 class="ivx-question-heading">
+                    <i class="fa-solid fa-circle-question"></i>
+
+                    Questions Asked
+                  </h4>
+
+                  <ul class="ivx-question-list">
+                    <li class="ivx-question-item">Introduce yourself.</li>
+
+                    <li class="ivx-question-item">
+                      Print the second largest element in the array.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Tell me something about yourself which isn't in the
+                      resume.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Do you know about the bond?
+                    </li>
+
+                    <li class="ivx-question-item">Are you able to relocate?</li>
+
+                    <li class="ivx-question-item">
+                      Where do you want to see yourself in 5 years?
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- =====================================================
+             TCS
+             ===================================================== -->
+
+            <div class="ivx-experience-card">
+              <div class="ivx-company-icon">
+                <i class="fa-solid fa-building"></i>
+              </div>
+
+              <div class="ivx-card-body">
+                <div class="ivx-company-header">
+                  <h3 class="ivx-company-name">Tata Consultancy Services</h3>
+
+                  <span class="ivx-result-badge ivx-selected">
+                    <i class="fa-solid fa-check"></i>
+
+                    Selected · Digital · 7.1 LPA
+                  </span>
+                </div>
+
+                <p class="ivx-role-text">
+                  <i class="fa-solid fa-code"></i>
+
+                  Systems Engineer
+                </p>
+
+                <div class="ivx-meta-row">
+                  <span class="ivx-meta-item">
+                    <i class="fa-regular fa-clock"></i>
+
+                    Full-Time
+                  </span>
+
+                  <span class="ivx-meta-item">
+                    <i class="fa-solid fa-building"></i>
+
+                    Offline Interview
+                  </span>
+                </div>
+
+                <div class="ivx-question-area">
+                  <h4 class="ivx-question-heading">
+                    <i class="fa-solid fa-circle-question"></i>
+
+                    Questions Asked
+                  </h4>
+
+                  <ul class="ivx-question-list">
+                    <li class="ivx-question-item">Introduce yourself.</li>
+
+                    <li class="ivx-question-item">
+                      Dynamic String — remove multiple spaces in between the
+                      string with a time complexity of O(1).
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Transaction handling in Spring Boot and a scenario-based
+                      question based on it.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      How do you connect the backend with a database in Spring
+                      Boot?
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Write the backend code to create a database in MySQL.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Three SQL-based questions: get the last 500 rows in the
+                      database, get records in set A that are uncommon in set B,
+                      and explain how LEFT, RIGHT and INNER JOINs work.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Exception handling and what is a NullPointerException.
+                    </li>
+
+                    <li class="ivx-question-item">
+                      Tell me about your achievements.
+                    </li>
+
+                    <li class="ivx-question-item">What are your hobbies?</li>
+
+                    <li class="ivx-question-item">
+                      Tell me about your family.
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-
-          <div class="achievement-card">
-            <div class="achievement-icon">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-
-            <div class="achievement-content">
-              <div class="achievement-header">
-                <h3 class="achievement-title">Hexaware</h3>
-                <span class="outcome-badge">
-                  Rejected in the HR interview
-                </span>
-                <span class="outcome-badge">
-                  Status : Not Selected
-                </span>
-              </div>
-
-              <p class="achievement-role">Role : Not Specified</p>
-
-              <div class="achievement-meta">
-                <span>
-                  <i class="fa-regular fa-clock"></i>
-                  Full - Time
-                </span>
-
-                <span> Offline Interview </span>
-              </div>
-
-              <div class="questions-section">
-                <h4>
-                  <i class="fa-solid fa-circle-question"></i>
-                  Questions Asked
-                </h4>
-
-                <ul class="questions-list">
-                  <li>
-                    <span>Introduce yourself</span>
-                  </li>
-
-                  <li>
-                    <span>print second largest element in the array</span>
-                  </li>
-
-                  <li>
-                    <span
-                      >tell me something about yourself which isnt in the
-                      resume</span
-                    >
-                  </li>
-
-                  <li>
-                    <span>do you know about the bond</span>
-                  </li>
-                  <li>
-                    <span>are you able to relocate</span>
-                  </li>
-
-                  <li>
-                    <span>where do you want to see yourself in 5 years</span>
-                    <
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="achievement-card">
-            <div class="achievement-icon">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-
-            <div class="achievement-content">
-              <div class="achievement-header">
-                <h3 class="achievement-title">Tata Consultancy Services</h3>
-                <span class="outcome-badge">
-                  <i class="fa-solid fa-check"></i> Selected | Digital | 7.1 lpa
-                </span>
-              </div>
-
-              <p class="achievement-role">
-                <i class="fa-solid fa-code"></i>
-                Systems Engineer
-              </p>
-
-              <div class="achievement-meta">
-                <span>
-                  <i class="fa-regular fa-clock"></i>
-                  Full Time
-                </span>
-
-                <span> Offline Interview </span>
-              </div>
-
-              <div class="questions-section">
-                <h4>
-                  <i class="fa-solid fa-circle-question"></i>
-                  Questions Asked
-                </h4>
-
-                <ul class="questions-list">
-                  <li>
-                    <span>Introduce yourself</span>
-                  </li>
-
-                  <li>
-                    <span>
-                      Dynamic String - remove multiple spaces in between the
-                      string with a time complexity of O(1)
-                    </span>
-                  </li>
-                  <li>
-                    <span>
-                      Transaction handling in spring boot and a scenario based
-                      question based on that.
-                    </span>
-                  </li>
-
-                  <li>
-                    <span
-                      >How do you connect backend with database in Spring
-                      boot</span
-                    >
-                  </li>
-
-                  <li>
-                    <span
-                      >write the backend code to create a database in
-                      MySQL</span
-                    >
-                  </li>
-
-                  <li>
-                    <span
-                      >3 SQL based questions - get the last 500 rows in the
-                      database, get the records in set a which are uncommon in
-                      set b, a question about how left,right and inner joins
-                      work</span
-                    >
-                  </li>
-                  <li>
-                    <span>
-                      Exception handling and what is null pointer exception
-                    </span>
-                  </li>
-                  <li>
-                    <span> they asked me about my achievements </span>
-                  </li>
-                  <li>
-                    <span> hobbies </span>
-                  </li>
-                  <li>
-                    <span> tell me about your family </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="achievement-card">
-            <div class="achievement-icon">
-              <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-
-            <div class="achievement-content">
-              <div class="achievement-header">
-                <h3 class="achievement-title">InsightsKV</h3>
-                <span class="outcome-badge">
-                  <i class="fa-solid fa-check"></i> Selected
-                </span>
-              </div>
-
-              <p class="achievement-role">
-                <i class="fa-solid fa-code"></i>
-                Web Developer Intern
-              </p>
-
-              <div class="achievement-meta">
-                <span>
-                  <i class="fa-regular fa-clock"></i>
-                  3 Months
-                </span>
-
-                <span>
-                  <i class="fa-solid fa-video"></i>
-                  Online Interview
-                </span>
-              </div>
-
-              <div class="questions-section">
-                <h4>
-                  <i class="fa-solid fa-circle-question"></i>
-                  Questions Asked
-                </h4>
-
-                <ul class="questions-list">
-                  <li>
-                    <span>Introduce yourself</span>
-                    <strong>Answered</strong>
-                  </li>
-
-                  <li>
-                    <span>
-                      Write code to remove even numbers from an array with
-                      <code>O(1)</code> space complexity
-                    </span>
-                    <strong>Answered</strong>
-                  </li>
-
-                  <li>
-                    <span>What is Spring Boot?</span>
-                    <strong>Answered</strong>
-                  </li>
-
-                  <li>
-                    <span>Tell me what you know about APIs</span>
-                    <strong>Answered</strong>
-                  </li>
-
-                  <li>
-                    <span
-                      >How would you connect the backend with the
-                      frontend?</span
-                    >
-                    <strong>Answered</strong>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <!-- Achievement 2 -->
-
-          <!-- Achievement 3 -->
-
-          <!-- Achievement 4 -->
         </div>
-      </div>
-    </section>
-  </th:block>
+      </section>
+    </th:block>
+  </body>
 </html>
