@@ -1165,6 +1165,64 @@ a {
   line-height: 1.6;
 }
 
+/* Cap the card height and let the questions list scroll inside it */
+.achievement-card {
+  max-height: 560px;
+}
+
+.achievement-content {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.achievement-header,
+.achievement-role,
+.achievement-meta {
+  flex-shrink: 0;
+}
+
+.questions-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.questions-section h4 {
+  flex-shrink: 0;
+}
+
+.questions-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) rgba(255, 255, 255, 0.08);
+}
+
+.questions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.questions-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+.questions-list::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+.questions-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
 /* Contact Section */
 .contact {
   position: relative;
